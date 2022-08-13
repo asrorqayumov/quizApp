@@ -21,6 +21,14 @@ body {
   justify-content: center;
   align-items: center;
 }
+.navbar{
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  background-color: #e1ecf0ae;
+  padding-left: 20%;
+}
 
 .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
   margin: 10px 10px 0px 0px !important;
