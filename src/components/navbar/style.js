@@ -6,10 +6,5 @@ export const Nav = styled.div`
   align-items: center;
   justify-content: start;
   background-color: #e1ecf0ae;
-`
-    
-export const NavBrandText = styled.p`
-    padding-left: 20%;
-    font-size: 1.7rem;
-    font-weight: 500;
+  padding-left: 20%;
 `
