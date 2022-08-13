@@ -1,17 +1,19 @@
 import { Route, Routes } from "react-router";
 import Navbar from "./components/navbar";
 import Home from "./pages/home";
-import Quiz from './pages/quiz/index';
-
+import Quiz from "./pages/quiz/index";
+import { QuestionsProvider } from "./context/questions";
 
 function App() {
   return (
     <>
-       <Navbar />
-       <Routes>
+      <QuestionsProvider>
+        <Navbar />
+        <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/quiz" element={<Quiz />} />
-       </Routes>
+        </Routes>
+      </QuestionsProvider>
     </>
   );
 }

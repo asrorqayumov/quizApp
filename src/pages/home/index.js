@@ -9,22 +9,44 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
+import { getCategorys, getQuestions } from "../../api/request";
+import { useContext } from "react";
+import QuestionsContext from "../../context/questions";
 
 const Home = () => {
-  const [age, setAge] = useState("");
+  const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
+  const [categorys,setCategorys] = useState([])
+  const {setQuestions} = useContext(QuestionsContext)
   const navigate = useNavigate();
 
-  const handleChangeAge = (event) => {
-    setAge(event.target.value);
-  };
+  useEffect(()=>{
+     getCategorys()
+     .then((data)=> setCategorys(data.trivia_categories))
+     .catch((err)=> console.log(err))
+  },[])
 
+  const handleChangeAmount = (event) => {
+    setAmount(event.target.value);
+  };
   const handleChangeCategory = (event) => {
     setCategory(event.target.value);
   };
 
-  const handleSubmit = () => {
-    navigate("/quiz");
+
+  const handleSubmit =  (e) => {
+    e.preventDefault();
+   getQuestions(amount,category)
+    .then((res)=>{
+       console.log(res);
+        setQuestions(res.results)
+        navigate("/quiz");
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+
   };
 
   return (
@@ -43,9 +65,10 @@ const Home = () => {
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={age}
-              onChange={handleChangeAge}
+              value={amount}
+              onChange={handleChangeAmount}
               label="Age"
+              required
             >
               <MenuItem value={10}>10</MenuItem>
               <MenuItem value={15}>15</MenuItem>
@@ -68,14 +91,21 @@ const Home = () => {
               value={category}
               onChange={handleChangeCategory}
               label="Catgeory"
+              required
             >
-              <MenuItem value={"english"}>English</MenuItem>
+              {
+                categorys.map((item)=>{
+                  return (
+                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                  )
+                })
+              }
             </Select>
           </FormControl>
           <Button
             variant="contained"
             fullWidth
-            role={"submit"}
+            type="submit"
             color="success"
             sx={{ marginTop: 3 }}
           >
