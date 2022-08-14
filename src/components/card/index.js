@@ -6,22 +6,22 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { List, ListItemButton, ListItemText } from "@mui/material";
 
-const CardQuestion = () => {
+const CardQuestion = ({ data, value, setValue,lastValue }) => {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
-
+  const decValue = () => {
+     value==1?setValue(value):setValue(--value)
+  };
+  const incValue = () => {
+     value==lastValue?setValue(value):setValue(++value)
+  };
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
   return (
     <Card className="card">
       <CardContent>
-        <Typography
-          variant="h6"
-          className='card-title'
-          gutterBottom
-        >
-          181.Match and make meaningful sentences: The main functions of a
-          qualified logistician include:
+        <Typography variant="h6" className="card-title" gutterBottom>
+          {data.question}
         </Typography>
 
         <form>
@@ -53,14 +53,14 @@ const CardQuestion = () => {
           </List>
         </form>
       </CardContent>
-      <CardActions className="d-flex card-footer">
-        <Button variant="contained" size="small">
+      <CardActions className="d-flex card-footer" sx={{justifyContent:'space-between'}} >
+        <Button variant="contained" size="small" onClick={decValue}>
           Previous
         </Button>
         <Button variant="contained" size="small">
           Submit
         </Button>
-        <Button variant="contained" size="small">
+        <Button variant="contained" size="small" onClick={incValue}>
           Next
         </Button>
       </CardActions>

@@ -6,6 +6,7 @@ import {
   Select,
   Box,
   Button,
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -17,36 +18,41 @@ import QuestionsContext from "../../context/questions";
 const Home = () => {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
-  const [categorys,setCategorys] = useState([])
-  const {setQuestions} = useContext(QuestionsContext)
+  const [categorys, setCategorys] = useState([]);
+  const [validate, setValidate] = useState(false);
+  const { setQuestions } = useContext(QuestionsContext);
   const navigate = useNavigate();
 
-  useEffect(()=>{
-     getCategorys()
-     .then((data)=> setCategorys(data.trivia_categories))
-     .catch((err)=> console.log(err))
-  },[])
+  useEffect(() => {
+    getCategorys()
+      .then((data) => setCategorys(data.trivia_categories))
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleChangeAmount = (event) => {
     setAmount(event.target.value);
+    setValidate(false);
   };
   const handleChangeCategory = (event) => {
     setCategory(event.target.value);
+    setValidate(false);
   };
 
-
-  const handleSubmit =  (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-   getQuestions(amount,category)
-    .then((res)=>{
-       console.log(res);
-        setQuestions(res.results)
-        navigate("/quiz");
-    })
-    .catch((err)=>{
-      console.log(err);
-    })
-
+    if (amount == "" || category == "") {
+      setValidate(true);
+    } else {
+      getQuestions(amount, category)
+        .then((res) => {
+          console.log(res);
+          setQuestions(res.results);
+          navigate("/quiz");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -68,7 +74,6 @@ const Home = () => {
               value={amount}
               onChange={handleChangeAmount}
               label="Age"
-              required
             >
               <MenuItem value={10}>10</MenuItem>
               <MenuItem value={15}>15</MenuItem>
@@ -80,7 +85,7 @@ const Home = () => {
 
           <FormControl
             variant="standard"
-            sx={{ minWidth: "100%", marginTop: 3 }}
+            sx={{ minWidth: "100%", marginTop: 3, marginBottom: 1 }}
           >
             <InputLabel id="demo-simple-select-standard-label">
               Category:
@@ -93,21 +98,26 @@ const Home = () => {
               label="Catgeory"
               required
             >
-              {
-                categorys.map((item)=>{
-                  return (
-                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                  )
-                })
-              }
+              {categorys.map((item) => {
+                return (
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.name}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
+          {validate ? (
+            <Typography color={"red"}>Please fill to all fields</Typography>
+          ) : (
+            ""
+          )}
           <Button
             variant="contained"
             fullWidth
             type="submit"
             color="success"
-            sx={{ marginTop: 3 }}
+            sx={{ marginTop: 2 }}
           >
             Start
           </Button>

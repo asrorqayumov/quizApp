@@ -1,14 +1,13 @@
 import { Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Nav } from "./style";
 
 const Navbar = () => {
   return (
     <div className="navbar">
-      <Typography variant="h5" fontWeight={500} >
+      <Typography variant="h5">
         <Link to="/" className="brand-text">
-          Test
+           Test
         </Link>
       </Typography>
     </div>
