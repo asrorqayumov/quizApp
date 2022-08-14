@@ -22,3 +22,9 @@ export function TabPanel(props) {
     let index = questions.indexOf(item)
     return index=index+1
   }
+
+  export function Options(corr,inc) {
+    let total = inc.concat(corr);
+    let mixed = total.sort()
+    return mixed
+  }

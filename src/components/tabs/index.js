@@ -6,34 +6,53 @@ import { Button, Typography } from "@mui/material";
 import CardQuestion from "../card";
 import QuestionsContext from "../../context/questions";
 import { findIndex, TabPanel } from "../../utils";
-
+import AlertDialog from "../modal";
 
 export default function TabsPanel() {
-  const [value, setValue] = useState(1);
+  let [value, setValue] = useState(1);
+  const [open, setOpen] = useState(false);
   const { questions } = useContext(QuestionsContext);
+  let [totalScore, setTotalScore] = useState(0);
+  let [disableTab,setDisableTab] = useState(false)
   const lastValue = questions.length;
 
   const handleChange = (event, newValue) => {
     setValue(++newValue);
   };
 
+  const handleClickOpen = () => {
+    setOpen(true);
+    setDisableTab(true)
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
-    <Box className="quiz-wrapper"> 
-      <div className="d-flex" style={{flexDirection:'column'}}>
+    <Box className="quiz-wrapper">
+      <div className="d-flex" style={{ flexDirection: "column" }}>
         <Tabs
           onChange={handleChange}
           variant="standard"
-          visibleScrollbar="false"
-          value="false"
-          style={{marginLeft:13}}
+          value={false}
+          style={{ marginLeft: 13 }}
         >
           {questions.map((item) => {
             return (
               <Tab
                 key={item.question}
+                disabled={disableTab}
                 label={
-                  <Button variant={findIndex(questions,item)===value?'contained':'outlined'} color="primary">
-                    {findIndex(questions,item)}
+                  <Button
+                    variant={
+                      findIndex(questions, item) === value
+                        ? "contained"
+                        : "outlined"
+                    }
+                    color="primary"
+                    disabled={disableTab}
+                  >
+                    {findIndex(questions, item)}
                   </Button>
                 }
               />
@@ -43,8 +62,22 @@ export default function TabsPanel() {
 
         {questions.map((item) => {
           return (
-            <TabPanel component="div" value={value} index={findIndex(questions,item)}>
-              <CardQuestion data={item} value={value} setValue={setValue} lastValue={lastValue} />
+            <TabPanel
+              key={item.question}
+              component="div"
+              value={value}
+              index={findIndex(questions, item)}
+            >
+              <CardQuestion
+                data={item}
+                value={value}
+                setValue={setValue}
+                lastValue={lastValue}
+                totalScore={totalScore}
+                setTotalScore={setTotalScore}
+                setDisableTab={setDisableTab}
+                disableTab={disableTab}
+              />
             </TabPanel>
           );
         })}
@@ -54,9 +87,15 @@ export default function TabsPanel() {
           {value}/{questions.length}
         </Typography>
         <div>
-          <Button variant="contained" color="success">
+          <Button disabled={disableTab} variant="contained" color="success" onClick={handleClickOpen}>
             Finish
           </Button>
+          <AlertDialog
+            open={open}
+            handleClose={handleClose}
+            score={totalScore}
+            total={lastValue}
+          />
         </div>
       </div>
     </Box>
