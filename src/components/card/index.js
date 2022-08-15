@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -19,18 +19,18 @@ const CardQuestion = ({
   let [selectedIndex, setSelectedIndex] = useState(0);
   const optionsData = Options(data.correct_answer, data.incorrect_answers);
   const decValue = () => {
-    value == 1 ? setValue(value) : setValue(--value);
+    value === 1 ? setValue(value) : setValue(--value);
   };
   const incValue = () => {
-    value == lastValue ? setValue(value) : setValue(++value);
+    value === lastValue ? setValue(value) : setValue(++value);
   };
   const handleListItemClick = (event, index, item) => {
-    if (item == data.correct_answer) {
+    if (item === data.correct_answer) {
       event.currentTarget.classList.add("disabled-true");
       setTotalScore(++totalScore);
     } else {
       let corr = optionsData.find((answer) => {
-        return data.correct_answer == answer;
+        return data.correct_answer === answer;
       });
       event.currentTarget.classList.add("disabled");
       setSelectedIndex(findIndex(optionsData, corr));

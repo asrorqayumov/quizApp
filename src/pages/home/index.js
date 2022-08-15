@@ -40,12 +40,11 @@ const Home = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (amount == "" || category == "") {
+    if (amount === "" || category === "") {
       setValidate(true);
     } else {
       getQuestions(amount, category)
         .then((res) => {
-          console.log(res);
           setQuestions(res.results);
           navigate("/quiz");
         })
