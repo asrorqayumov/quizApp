@@ -10,7 +10,7 @@ function App() {
       <QuestionsProvider>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/quizApp" element={<Home />} />
           <Route path="/quiz" element={<Quiz />} />
         </Routes>
       </QuestionsProvider>
